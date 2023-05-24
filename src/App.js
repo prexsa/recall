@@ -6,9 +6,12 @@ function App() {
   const [first, setFirst] = useState({ isFlipped: false, index: null, value: null });
   const [second, setSecond] = useState({ isFlipped: false, index: null, value: null });
   const [matched, setMatches] = useState([]);
+  const [isComplete, setIsComplete] = useState(false)
 
   const handleOnClick = (index, value) => {
     // console.log('handleOnClick: ', index)
+    // block user from spam clicking
+    if(second.isFlipped) return;
     if(first.isFlipped === false) {
       setFirst({ isFlipped: true, index, value })
     } else {
@@ -17,15 +20,15 @@ function App() {
   }
 
   const addToMatched = useCallback((first, second) => {
-    const timer = setTimeout(() => {
+    setTimeout(() => {
       setMatches((m) => [...m, first, second])
     }, 2000)
   }, [])
 
   useEffect(() => {
-    console.log({ first, second, matched })
+    // console.log({ first, second, matched })
     if(!first.isFlipped || !second.isFlipped) return
-    if(first.value !== null && second.value !== null && first.value === second.value) {
+    if(first.value === second.value) {
       addToMatched(first.index, second.index)
     }
 
@@ -37,13 +40,28 @@ function App() {
     return () => clearTimeout(timer)
     
   }, [first, second, addToMatched])
-  
+
+  const clearFeedback = useCallback(() => {
+    setTimeout(() => {
+      setIsComplete(false);
+      console.log('hello')
+    }, 2000)
+  }, [])
+
+  useEffect(() => {
+    if(nums.length === matched.length) {
+      setIsComplete(true);
+      clearFeedback()
+    }
+  }, [nums, matched, clearFeedback])
+
   return (
     <div className="app">
       <header>
         <h1>Memory Recall Game</h1>
         <p>Match each pair of cards</p>
       </header>
+      <div className={`feedback ${isComplete ? 'show': 'hide'}`}>Congratulations</div>
       <main className='main'>
         <div className="left-side">
           <h2>Current Level: <span>10</span></h2>
