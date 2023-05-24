@@ -17,6 +17,7 @@
 
 .right-side {
   width: 75%;
+  padding: 10px;
 }
 
 .card-wrapper {
@@ -49,12 +50,19 @@
 }
 
 /* Do a horizontal flip when you move the mouse over the flip box contianer */
-/*.flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
-}*/
+.flip-card:hover .flip-card-inner {
+  /*transform: rotateY(180deg);*/
+  cursor: pointer;
+}
 
 .rotate {
   transform: rotateY(180deg);
+}
+
+.white-out {
+  background-color: #fff;
+  color: #fff;
+  pointer-events: none; /* removes clickable interaction */
 }
 
 /* Position the front and back side */

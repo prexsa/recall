@@ -1,15 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 function App() {
-  const [active, setActive] = useState(null);
-  const nums = [...Array(15).keys()];
+  const [nums, setNums] = useState([...Array(6).keys(), ...Array(6).keys()]);
+  const [first, setFirst] = useState({ isFlipped: false, index: null, value: null });
+  const [second, setSecond] = useState({ isFlipped: false, index: null, value: null });
+  const [matched, setMatches] = useState([]);
 
-  const handleOnClick = (index) => {
+  const handleOnClick = (index, value) => {
     // console.log('handleOnClick: ', index)
-    setActive(index);
+    if(first.isFlipped === false) {
+      setFirst({ isFlipped: true, index, value })
+    } else {
+      setSecond({ isFlipped: true, index, value });
+    }
   }
 
+  const addToMatched = useCallback((first, second) => {
+    const timer = setTimeout(() => {
+      setMatches((m) => [...m, first, second])
+    }, 2000)
+  }, [])
+
+  useEffect(() => {
+    console.log({ first, second, matched })
+    if(!first.isFlipped || !second.isFlipped) return
+    if(first.value !== null && second.value !== null && first.value === second.value) {
+      addToMatched(first.index, second.index)
+    }
+
+    const timer = setTimeout(() => {
+      setFirst({ isFlipped: false, index: null, value: null });
+      setSecond({ isFlipped: false, index: null, value: null });
+    }, 2000)
+
+    return () => clearTimeout(timer)
+    
+  }, [first, second, addToMatched])
+  
   return (
     <div className="app">
       <header>
@@ -28,17 +56,28 @@ function App() {
         {
           nums.map((num, idx) => {
             return (
-              <div key={num + 1} className='flip-card'>
+              <div key={idx} className='flip-card'>
                 <div 
-                  className={`flip-card-inner ${active === idx ? 'rotate' : ''}`} 
-                  onClick={() => handleOnClick(idx)}
+                  className={
+                    `flip-card-inner` +  
+                    ` ${(first.index === idx) ? 'rotate' : ''}` + 
+                    ` ${(second.index === idx) ? 'rotate' : ''}`
+                  } 
+                  onClick={() => handleOnClick(idx, num + 1)}
                 >
-                  <div className='flip-card-front'>
-                    <span className="center-text">?</span>
-                  </div>
-                  <div className='flip-card-back'>
-                    <span className="center-text">{num + 1}</span>
-                  </div>
+                {
+                  matched.indexOf(idx) !== -1 ?
+                  <div className='white-out'></div>
+                  :
+                  <>
+                    <div className='flip-card-front'>
+                      <span className="center-text">?</span>
+                    </div>
+                    <div className='flip-card-back'>
+                      <span className="center-text">{num + 1}</span>
+                    </div>
+                  </>
+                }
                 </div>
               </div>
             )
