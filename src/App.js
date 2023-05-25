@@ -28,7 +28,7 @@ function App() {
     const mergeDupKeys = [...Array(val).keys(), ...Array(val).keys()]
     const shuffled = shuffle(mergeDupKeys);
     setNums(shuffled)
-  }, [])
+  }, []);
 
   useEffect(() => {
     // Initial setup of board starts here
@@ -75,7 +75,7 @@ function App() {
       setMatches([])
       levelUp();
     }, 2000)
-  }, [])
+  }, [levelUp])
 
   useEffect(() => {
     if((nums.length !== 0 || matched.length !== 0) && nums.length === matched.length) {
@@ -96,10 +96,8 @@ function App() {
       <main className='main'>
         <div className="left-side">
           <h2>Current Level: <span>{level}</span></h2>
-          <div>
-            <h4>Highest Score</h4>
-            <p>Username <span>Level 15</span></p>
-          </div>
+          <h2>Time: 00:00</h2>
+          <h2>Moves: 00:00</h2>
         </div>
         <div className='card-wrapper right-side'>
         {
