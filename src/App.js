@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
 function App() {
-  const [nums, setNums] = useState([...Array(6).keys(), ...Array(6).keys()]);
+  const [nums, setNums] = useState([]);
   const [first, setFirst] = useState({ isFlipped: false, index: null, value: null });
   const [second, setSecond] = useState({ isFlipped: false, index: null, value: null });
   const [matched, setMatches] = useState([]);
-  const [isComplete, setIsComplete] = useState(false)
+  const [isComplete, setIsComplete] = useState(false);
+  let [level, setLevel] = useState(1);
 
   const handleOnClick = (index, value) => {
     // console.log('handleOnClick: ', index)
@@ -19,6 +20,24 @@ function App() {
     }
   }
 
+  const shuffle = (array) => array.sort((a, b) => 0.5 - Math.random());
+  const handleShuffle = () => shuffle();
+
+  // increase by multiple of 2
+  const buildArray = useCallback((val) => {
+    const mergeDupKeys = [...Array(val).keys(), ...Array(val).keys()]
+    const shuffled = shuffle(mergeDupKeys);
+    setNums(shuffled)
+  }, [])
+
+  useEffect(() => {
+    // Initial setup of board starts here
+    // Each row contains 4 cards
+    if(level > 4) return;
+    const keys = 2 + (level * 2) ;
+    buildArray(keys);
+  }, [buildArray, level])
+
   const addToMatched = useCallback((first, second) => {
     setTimeout(() => {
       setMatches((m) => [...m, first, second])
@@ -27,7 +46,7 @@ function App() {
 
   useEffect(() => {
     // console.log({ first, second, matched })
-    if(!first.isFlipped || !second.isFlipped) return
+    if(!first.isFlipped || !second.isFlipped) return;
     if(first.value === second.value) {
       addToMatched(first.index, second.index)
     }
@@ -41,15 +60,25 @@ function App() {
     
   }, [first, second, addToMatched])
 
+  const levelUp = () => {
+    console.log('levelUp')
+    setLevel(level + 1)
+  }
+
+  const handleLevelUp = () => {
+    setLevel(level + 1)
+  }
+
   const clearFeedback = useCallback(() => {
     setTimeout(() => {
       setIsComplete(false);
-      console.log('hello')
+      setMatches([])
+      levelUp();
     }, 2000)
   }, [])
 
   useEffect(() => {
-    if(nums.length === matched.length) {
+    if((nums.length !== 0 || matched.length !== 0) && nums.length === matched.length) {
       setIsComplete(true);
       clearFeedback()
     }
@@ -61,10 +90,12 @@ function App() {
         <h1>Memory Recall Game</h1>
         <p>Match each pair of cards</p>
       </header>
+      {/*<button onClick={handleShuffle}>shuffle</button>
+      <button onClick={handleLevelUp}>Level Up</button>*/}
       <div className={`feedback ${isComplete ? 'show': 'hide'}`}>Congratulations</div>
       <main className='main'>
         <div className="left-side">
-          <h2>Current Level: <span>10</span></h2>
+          <h2>Current Level: <span>{level}</span></h2>
           <div>
             <h4>Highest Score</h4>
             <p>Username <span>Level 15</span></p>
