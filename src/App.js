@@ -1,13 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import Timer from './Timer';
 import './App.css';
 
 function App() {
+  const timerCompRef = useRef(null);
   const [nums, setNums] = useState([]);
   const [first, setFirst] = useState({ isFlipped: false, index: null, value: null });
   const [second, setSecond] = useState({ isFlipped: false, index: null, value: null });
   const [matched, setMatches] = useState([]);
   const [isComplete, setIsComplete] = useState(false);
-  let [level, setLevel] = useState(1);
 
   const handleOnClick = (index, value) => {
     // console.log('handleOnClick: ', index)
@@ -22,6 +23,9 @@ function App() {
 
   const shuffle = (array) => array.sort((a, b) => 0.5 - Math.random());
   const handleShuffle = () => shuffle();
+  // Access Timer (child) component func
+  const handleStart = () => timerCompRef.current.handleToggle()
+  const handleReset = () => timerCompRef.current.handleReset()
 
   // increase by multiple of 2
   const buildArray = useCallback((val) => {
@@ -32,11 +36,9 @@ function App() {
 
   useEffect(() => {
     // Initial setup of board starts here
-    // Each row contains 4 cards
-    if(level > 4) return;
-    const keys = 2 + (level * 2) ;
+    const keys = 10
     buildArray(keys);
-  }, [buildArray, level])
+  }, [buildArray])
 
   const addToMatched = useCallback((first, second) => {
     setTimeout(() => {
@@ -60,22 +62,12 @@ function App() {
     
   }, [first, second, addToMatched])
 
-  const levelUp = () => {
-    console.log('levelUp')
-    setLevel(level + 1)
-  }
-
-  const handleLevelUp = () => {
-    setLevel(level + 1)
-  }
-
   const clearFeedback = useCallback(() => {
     setTimeout(() => {
       setIsComplete(false);
       setMatches([])
-      levelUp();
     }, 2000)
-  }, [levelUp])
+  }, [])
 
   useEffect(() => {
     if((nums.length !== 0 || matched.length !== 0) && nums.length === matched.length) {
@@ -88,18 +80,19 @@ function App() {
     <div className="app">
       <header>
         <h1>Memory Recall Game</h1>
-        <p>Match each pair of cards</p>
+        <h3>Match each pair of cards</h3>
       </header>
+      <button className="btn btn-start" onClick={handleStart}>Start</button>
+      <button className="btn btn-reset" onClick={handleReset}>Reset</button>
       {/*<button onClick={handleShuffle}>shuffle</button>
       <button onClick={handleLevelUp}>Level Up</button>*/}
       <div className={`feedback ${isComplete ? 'show': 'hide'}`}>Congratulations</div>
+      <div className="game-stats-wrapper">
+        <h2>Time: <div className="game-stats"><Timer ref={timerCompRef} /></div></h2>
+        <h2>Moves: <div className="game-stats">0</div></h2>
+      </div>
       <main className='main'>
-        <div className="left-side">
-          <h2>Current Level: <span>{level}</span></h2>
-          <h2>Time: 00:00</h2>
-          <h2>Moves: 00:00</h2>
-        </div>
-        <div className='card-wrapper right-side'>
+        <div className='card-wrapper'>
         {
           nums.map((num, idx) => {
             return (

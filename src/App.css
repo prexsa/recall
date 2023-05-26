@@ -9,21 +9,27 @@
   font-weight: bold;
   color: #7EC8E3;
 }
+.game-stats-wrapper {
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  column-gap: 15px;
+}
+
+.game-stats-wrapper h2 {
+  font-weight: 400;
+}
+
+.game-stats {
+  font-size: 0.8em;
+}
 
 .main {
-  width: 1200px;
+  width: 1000px;
   margin: 0 auto;
   padding: 15px 25px;
-  display: flex;
-}
-
-.left-side {
-  width: 25%;
-}
-
-.right-side {
-  width: 75%;
-  padding: 10px;
+  /*display: flex;*/
 }
 
 .card-wrapper {
@@ -119,4 +125,44 @@
 
 .hide {
   visibility: hidden;
+}
+
+.btn {
+  border-radius: 5px;
+  padding: 10px;
+  min-height: 30px;
+  min-width: 120px;
+  border: none;
+  margin: 3px 5px;
+}
+
+.btn:hover {
+  cursor: pointer;
+  transition: 0.2s;
+  background-color: #dedede;
+}
+
+.btn:focus {
+  outline-color: transparent;
+  outline-style: solid;
+  box-shadow: 0 0 0 1px #dedede;
+  transition: 0.2s;
+}
+
+.btn-start {
+  background-color: #669900;
+  outline-color: #669900;
+}
+
+.btn-start:active {
+  outline-color: #669900;
+}
+
+.btn-reset {
+  background-color: #eac006;
+  outline-color: #eac006;
+}
+
+.btn-reset:active {
+  outline-color: #eac006;
 }
