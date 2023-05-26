@@ -1,8 +1,8 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 const CountUpTimer = forwardRef(({...props}, ref) => {
+  const { isActive, setIsActive } = props;
   const [seconds, setSeconds] = useState(0);
-  const [isActive, setIsActive] = useState(false);
 
   useImperativeHandle(ref, () => ({
     handleToggle,

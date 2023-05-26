@@ -9,6 +9,7 @@ function App() {
   const [second, setSecond] = useState({ isFlipped: false, index: null, value: null });
   const [matched, setMatches] = useState([]);
   const [isComplete, setIsComplete] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   const handleOnClick = (index, value) => {
     // console.log('handleOnClick: ', index)
@@ -22,7 +23,6 @@ function App() {
   }
 
   const shuffle = (array) => array.sort((a, b) => 0.5 - Math.random());
-  const handleShuffle = () => shuffle();
   // Access Timer (child) component func
   const handleStart = () => timerCompRef.current.handleToggle()
   const handleReset = () => timerCompRef.current.handleReset()
@@ -84,11 +84,13 @@ function App() {
       </header>
       <button className="btn btn-start" onClick={handleStart}>Start</button>
       <button className="btn btn-reset" onClick={handleReset}>Reset</button>
-      {/*<button onClick={handleShuffle}>shuffle</button>
-      <button onClick={handleLevelUp}>Level Up</button>*/}
       <div className={`feedback ${isComplete ? 'show': 'hide'}`}>Congratulations</div>
       <div className="game-stats-wrapper">
-        <h2>Time: <div className="game-stats"><Timer ref={timerCompRef} /></div></h2>
+        <h2>Time: 
+          <div className="game-stats">
+            <Timer ref={timerCompRef} isActive={isActive} setIsActive={setIsActive} />
+          </div>
+        </h2>
         <h2>Moves: <div className="game-stats">0</div></h2>
       </div>
       <main className='main'>
@@ -99,7 +101,8 @@ function App() {
               <div key={idx} className='flip-card'>
                 <div 
                   className={
-                    `flip-card-inner` +  
+                    `flip-card-inner` +
+                    ` ${isActive ? '' : 'lock-pointer-events'}` + 
                     ` ${(first.index === idx) ? 'rotate' : ''}` + 
                     ` ${(second.index === idx) ? 'rotate' : ''}`
                   } 

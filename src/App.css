@@ -17,6 +17,10 @@
   column-gap: 15px;
 }
 
+h2 {
+  margin: 0px !important; /* reset margin-block-start & margin-block-end */
+}
+
 .game-stats-wrapper h2 {
   font-weight: 400;
 }
