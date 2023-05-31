@@ -1,58 +1,75 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap');
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+h2 {
+  margin: 0px !important; /* reset margin-block-start & margin-block-end */
+}
 .app {
   position: relative;
-  min-height: 98vh;
+  max-height: 100vh;
   text-align: center;
 }
-
+.app header {
+  margin-top: 30px;
+}
+.app header h1 {
+  font-weight: 400;
+}
+.app header h3 {
+  font-weight: 500;
+  color: #585252;
+}
 .feedback {
   font-size: 24px;
   font-weight: bold;
-  color: #7EC8E3;
+  color: #7ec8e3;
 }
-.game-stats-wrapper {
+.game-actions {
+  margin-top: 15px;
+}
+.countdownBx {
+  min-height: 45px;
+}
+.game-stats {
   margin: 0 auto;
   width: 50%;
   display: flex;
   justify-content: space-around;
   column-gap: 15px;
 }
-
-h2 {
-  margin: 0px !important; /* reset margin-block-start & margin-block-end */
-}
-
-.game-stats-wrapper h2 {
-  font-weight: 400;
-}
-
-.game-stats {
+.statsBx {
   font-size: 0.8em;
 }
-
+.game-stats .heading {
+  font-weight: 500;
+  color: #585252;
+}
 .main {
   width: 1000px;
   margin: 0 auto;
   padding: 15px 25px;
   /*display: flex;*/
 }
-
-.card-wrapper {
+.cardBx {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   /*width: 1200px;*/
   margin: auto;
-  row-gap: 30px;
-  column-gap: 20px;
+  /*row-gap: 30px;
+  column-gap: 20px;*/
 }
-
 .flip-card {
   width: 150px;
   border: 1px solid #dcdcdc;
-  padding: 5px;
+  /*padding: 5px;*/
   min-height: 220px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  border-radius: 5px;
+  /*box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);*/
+  /*border-radius: 5px;*/
   perspective: 1000px;
 }
 /* This container is needed to position the front and back side */
@@ -64,28 +81,20 @@ h2 {
   transition: transform 0.8s;
   transform-style: preserve-3d;
 }
-
 /* Do a horizontal flip when you move the mouse over the flip box contianer */
 .flip-card:hover .flip-card-inner {
   /*transform: rotateY(180deg);*/
   cursor: pointer;
 }
-
-.lock-pointer-events {
-  pointer-events: none;
-}
-
 .rotate {
   transform: rotateY(180deg);
   pointer-events: none;
 }
-
 .white-out {
   background-color: #fff;
   color: #fff;
   pointer-events: none; /* removes clickable interaction */
 }
-
 /* Position the front and back side */
 .flip-card-front, .flip-card-back {
   position: absolute;
@@ -94,13 +103,11 @@ h2 {
   -webkit-backface-visibility: hidden; /* Safari */
   backface-visibility: hidden;
 }
-
 /* Style the front side (fallback if image is missing) */
 .flip-card-front {
   background-color: #bbb;
   color: black;
 }
-
 .center-text {
   display: block;
   position: relative;
@@ -108,13 +115,11 @@ h2 {
   transform: translateY(-50%);
   font-size: 47px;
 }
-
 .flip-card-back {
   background-color: dodgerblue;
   color: white;
   transform: rotateY(180deg);
 }
-
 .footer {
   position: absolute;
   bottom: 0;
@@ -122,15 +127,13 @@ h2 {
   height: 2.5rem; /* footer height */
   text-align: center;
 }
+/*
+  * Misc
+*/
 
-.show {
-  visibility: visible;
+.lock-pointer-events {
+  pointer-events: none;
 }
-
-.hide {
-  visibility: hidden;
-}
-
 .btn {
   border-radius: 5px;
   padding: 10px;
@@ -139,34 +142,34 @@ h2 {
   border: none;
   margin: 3px 5px;
 }
-
 .btn:hover {
   cursor: pointer;
   transition: 0.2s;
   background-color: #dedede;
 }
-
 .btn:focus {
   outline-color: transparent;
   outline-style: solid;
   box-shadow: 0 0 0 1px #dedede;
   transition: 0.2s;
 }
-
 .btn-start {
   background-color: #669900;
   outline-color: #669900;
 }
-
 .btn-start:active {
   outline-color: #669900;
 }
-
 .btn-reset {
   background-color: #eac006;
   outline-color: #eac006;
 }
-
 .btn-reset:active {
   outline-color: #eac006;
+}
+.show {
+  visibility: visible;
+}
+.hide {
+  visibility: hidden;
 }

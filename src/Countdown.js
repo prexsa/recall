@@ -1,22 +1,23 @@
 import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 
-const CountUpTimer = forwardRef(({...props}, ref) => {
-  const { isActive, setIsActive } = props;
-  const [seconds, setSeconds] = useState(0);
+const CountDown = forwardRef(({...props}, ref) => {
+  const { isActive, startGame } = props;
+  const [seconds, setSeconds] = useState(10);
+  const [go, setGo] = useState(true)
 
   useImperativeHandle(ref, () => ({
-    handleToggle,
-    handleReset,
-    getSeconds
+    handleTimerReset
   }))
 
-  const handleToggle = () => setIsActive(true);
+  // const handleToggle = () => setIsActive(true);
   const handleReset = () => {
-    setSeconds(0);
-    setIsActive(false);
+    setSeconds(10);
+    startGame();
   }
 
-  const getSeconds = () => seconds;
+  const handleTimerReset = () => {
+    setSeconds(10);
+  }
 
   const secondsToMinutes = time => {
     const minutes = `${Math.floor(time / 60)}`.padStart(2, "0");
@@ -28,10 +29,13 @@ const CountUpTimer = forwardRef(({...props}, ref) => {
     let interval = null;
     if(isActive) {
       interval = setInterval(() => {
-        setSeconds(seconds => seconds + 1);
+        // console.log('seconds: ', seconds)
+        setSeconds(seconds => seconds - 1);
+        if(seconds === 1) {
+          clearInterval(interval);
+          handleReset();
+        }
       }, 1000);
-    } else if (!isActive && seconds !== 0) {
-      clearInterval(interval)
     }
 
     return () => clearInterval(interval);
@@ -42,4 +46,4 @@ const CountUpTimer = forwardRef(({...props}, ref) => {
   )
 })
 
-export default CountUpTimer;
+export default CountDown;
