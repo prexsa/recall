@@ -41,7 +41,7 @@ function App() {
   // Access Timer (child) component func
   const handleStart = () => setShowAll(true);
   // const handleStart = () => timerCompRef.current.handleToggle()
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     if(showAll) {
       countdownCompRef.current.handleTimerReset();
       return;
@@ -52,7 +52,7 @@ function App() {
       setSecond({ isFlipped: false, index: null, value: null });
       timerCompRef.current.handleReset()
     }
-  }
+  }, [showAll])
 
   // increase by multiple of 2
   const buildArray = useCallback(() => {
@@ -71,7 +71,7 @@ function App() {
     setTimeout(() => {
       setMatches((m) => [...m, first, second])
     }, 1000)
-  }, [])
+  }, [setMatches])
 
   useEffect(() => {
     // console.log({ first, second, matched })
@@ -97,7 +97,7 @@ function App() {
       handleReset();
       buildArray();
     }, 2000)
-  }, [])
+  }, [buildArray, handleReset])
 
   useEffect(() => {
     if((nums.length !== 0 || matched.length !== 0) && nums.length === matched.length) {

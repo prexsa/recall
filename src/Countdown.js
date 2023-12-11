@@ -1,19 +1,18 @@
-import { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import { useState, useEffect, useCallback, forwardRef, useImperativeHandle } from 'react';
 
 const CountDown = forwardRef(({...props}, ref) => {
   const { isActive, startGame } = props;
   const [seconds, setSeconds] = useState(10);
-  const [go, setGo] = useState(true)
 
   useImperativeHandle(ref, () => ({
     handleTimerReset
   }))
 
-  // const handleToggle = () => setIsActive(true);
-  const handleReset = () => {
+  // const handleToggle = () => setIsActive(true)
+  const handleReset = useCallback(() => {
     setSeconds(10);
     startGame();
-  }
+  }, [setSeconds, startGame])
 
   const handleTimerReset = () => {
     setSeconds(10);
@@ -39,7 +38,7 @@ const CountDown = forwardRef(({...props}, ref) => {
     }
 
     return () => clearInterval(interval);
-  }, [seconds, isActive])
+  }, [seconds, isActive, handleReset])
 
   return (
     <>{secondsToMinutes(seconds)} seconds</>
